@@ -1,0 +1,17 @@
+
+canvas {
+    border: 1px solid #ff0000;
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+}
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
