@@ -1,0 +1,6 @@
+ISPORUCITI:
+- adresu git repozitorija s traženom web-stranicom i svim drugim datotekama ako postoje
+- adresu web-stranice
+- popis implementiranih funkcionalnosti
+- napomene (npr. "sve je uspješno implementirano", ili "nisam uspio/-la implementirati", itd.)
+- kratke upute kako pokrenuti i isprobati računalnu igru
