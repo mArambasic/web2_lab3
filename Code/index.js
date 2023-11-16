@@ -386,6 +386,7 @@ function updateGameArea() {
 
     for (let i = 0; i < asteroids.length; i++) {
         asteroids[i].newPos();
+        asteroids[i].update();
     }
 
     asteroids = asteroids.filter(function (asteroid) {
@@ -393,10 +394,6 @@ function updateGameArea() {
     });
 
     checkCollisions();
-
-    for (let i = 0; i < asteroids.length; i++) {
-        asteroids[i].update();
-    }
 
     myPlayer.update();
     displayBestTime();
