@@ -1,11 +1,10 @@
-var asteroids = [];
-var player;
-var keys = {};
-var startingTime;
-var playTime = 0;
-var stopTimeCount = false;
-var collisionSound = new Audio('crash.mp3');
-var asteroidNum = 10;
+var asteroids = []; //list of all asteroids
+var myPlayer; //the player rectangle
+var startingTime; //current time when new game is played 
+var playTime = 0; //time since new game has been started (currentTime - startingTime)
+var stopTimeCount = false; //a flag to stop counting playtime if game has been stopped
+var collisionSound = new Audio('crash.mp3'); //collision sound
+var asteroidNum = 10; //starting number od asteroids
 
 
 /* 
@@ -26,10 +25,14 @@ function startGame() {
         createNewAsteroids();
     }, 3000);
 
+    // An initial set of asteroids is created when the game first starts
     createNewAsteroids();
 
     /*
-        Creating the player rectangle in the center of the screen
+        -> creating the player rectangle in the center of the screen
+        -> height = width = 30
+        -> color = red
+        -> x and y coordinates are the center of the screen
      */
     myPlayer = new player(30, 30, "red", window.innerWidth / 2, window.innerHeight / 2)
     myGameArea.start();
@@ -71,11 +74,10 @@ function createNewAsteroids() {
                 break;
         }
 
-
         /* 
-           -> the asteroid can be created above, bellow, left or rigth of the canvas 
-           -> if the y coordinate is above or bellow the canvas, x coordinate is within range of the canvas
-           -> if the x coordinate is left or right of the canvas, the y coordinate is withing range of the canvas
+           -> the asteroid can be created above, bellow, left or right of the canvas 
+           -> if the y coordinate is above or bellow the canvas, the x coordinate is within range of the canvas
+           -> if the x coordinate is left or right of the canvas, the y coordinate is within range of the canvas
          */
         var randomDirection = Math.floor(Math.random() * 4);
         var randomXCoordinate = Math.floor(Math.random() * window.innerWidth);
@@ -99,6 +101,7 @@ function createNewAsteroids() {
                 break;
         }
 
+        // -> newly created asteroid is added to the list of asteroids
         asteroids.push(new asteroid(randomSize, randomSize, color, xStart, yStart))
     }
 }
@@ -126,14 +129,14 @@ var myGameArea = {
     },
     /*
         stop
-        -> clear the interval, updateGameArea function is no longer called, the game is stopped
+        -> clears the interval, updateGameArea function is no longer called, the game is stopped
      */
     stop: function () {
         clearInterval(this.interval);
     },
     /*
         clear
-        -> clears the frame before drawing the new canvas after its content is updated
+        -> clears the frame, before drawing the new canvas
      */
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -142,7 +145,7 @@ var myGameArea = {
 
 function asteroid(width, height, color, x, y) {
     /* 
-        -> speeds for x and y coordinate changes are random numbers from 0 to 3
+        -> speeds for x and y coordinate changes are random numbers from 1 to 3
     */
     var random_speed_x = Math.floor(Math.random() * 3) + 1;
     var random_speed_y = Math.floor(Math.random() * 3) + 1;
@@ -159,7 +162,7 @@ function asteroid(width, height, color, x, y) {
         update
         -> redraws the asteroid
         -> first it saves the current state of the canvas context
-        -> position the element among the x and y axis
+        -> positions the element among the x and y axis
         -> draws a white shadow with a blur radius of 10
         -> draws and fills the rectangle of a specific height and width
         -> this.width / -2, this.height / -2 is the coordinate of the upper left corner of the rectangle
@@ -208,7 +211,8 @@ function asteroid(width, height, color, x, y) {
 
         /*
             -> asteroids are created 50 px away from the canvas
-            -> if an asteroid starts to move away not towards the canvas, it is removed from the list 
+            -> if an asteroid starts to move away and not towards the canvas, this.remove is set to true
+                and it is later filtered out of the list of asteroids
          */
         var xWithWidth = newX + this.width;
         var yWithHeight = newY + this.height
@@ -244,7 +248,7 @@ function player(width, height, color, x, y) {
     /*
         moveX, moveY
         -> moves the x/y coordinate
-        -> if the x/y coordinate is moving out of frame it appears on the other side of the canvas
+        -> if the x/y coordinate is moving out of frame, it appears on the other side of the canvas
      */
     this.moveX = function (x_move) {
         var newX = this.x + x_move
@@ -294,12 +298,13 @@ function checkCollisions() {
     }
 }
 
+// playing the collision sound
 function playCollisionSound() {
     collisionSound.play();
 }
 
 /*
-    -> stopTimeCount = true, stops the current play time counter to keep counting after game is stopped
+    -> stopTimeCount = true, a flag to stop the playtime counter for that game
     -> game over text appears in the center of the screen
     -> game is stopped
     -> checkIfBestTime function is called
@@ -376,10 +381,10 @@ function displayBestTime() {
 /*
     -> function is called every 20 ms
     -> clears the game area
-    -> calculates new asteroid positions
+    -> calculates new asteroid positions and calls the update function for each asteroid
     -> filters out asteroids that are moving away from the canvas
     -> checks for collision
-    -> calls the asteroid update function, myplayer update function and display time functions
+    -> calls the myplayer update function and display time functions
  */
 function updateGameArea() {
     myGameArea.clear();
